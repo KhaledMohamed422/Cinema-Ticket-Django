@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('django/JsonNoModelNorest', no_rest_no_model),#1 To send as json without model and rest
     path('django/JsonModelNorest', model_no_rest), #2 To send as json model and without rest
-
+    path('djangoRestfreamwork/Get_Post', Get_List_Post_Data), #2 request post and get with restfreamwork
+    
 ]
