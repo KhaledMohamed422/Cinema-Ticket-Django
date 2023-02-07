@@ -18,5 +18,7 @@ from django.urls import path
 from tickets.views import * 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('returnJsonNoModelAndRest', no_rest_no_model),
+    path('django/JsonNoModelNorest', no_rest_no_model),#1 To send as json without model and rest
+    path('django/JsonModelNorest', model_no_rest), #2 To send as json model and without rest
+
 ]
