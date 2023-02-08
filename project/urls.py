@@ -18,8 +18,13 @@ from django.urls import path
 from tickets.views import * 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('django/JsonNoModelNorest', no_rest_no_model),#1 To send as json without model and rest
-    path('django/JsonModelNorest', model_no_rest), #2 To send as json model and without rest
-    path('djangoRestfreamwork/Get_Post', Get_List_Post_Data), #2 request post and get with restfreamwork
+    path('django/JsonNoModelNorest', fbv_no_rest_no_model),#1 To send as json without model and rest
+    path('django/JsonModelNorest', fbv_model_no_rest), #2 To send as json model and without rest
     
+    # #3.1 GET POST from rest framework function based view @api_view
+    path('djangoRestfreamwork/Get_Post', fbv_get_list_post_data), 
+    
+    #3.2 GET PUT DELETE from rest framework function based view @api_view
+    path('djangoRestfreamwork/Put_Get_Delete/<int:pk>', fbv_get_list_put_data_delete_data), 
+
 ]
