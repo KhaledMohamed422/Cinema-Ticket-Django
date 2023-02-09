@@ -33,4 +33,10 @@ urlpatterns = [
     #4.2 GET PUT DELETE from rest framework class based view APIView
     path('djangoRestfreamwork/CBV/<int:pk>', CBV_pk.as_view()),
  
+    #5.1 GET POST from rest framework class based view mixins
+    path('djangoRestfreamwork/mixins/', mixins_list.as_view()),
+
+    #5.2 GET PUT DELETE from rest framework class based view mixins
+    path('djangoRestfreamwork/mixins/<int:pk>', mixins_pk.as_view()),
+
 ]

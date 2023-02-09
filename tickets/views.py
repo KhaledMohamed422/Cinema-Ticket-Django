@@ -7,7 +7,7 @@ from .models import *
 from rest_framework import status, filters
 from rest_framework.views import APIView
 from django.http import Http404
-
+from rest_framework import generics, mixins, viewsets
 # Create your views here.
 # List == GET
 # Create == POST
@@ -148,3 +148,46 @@ class CBV_pk(APIView):
         querysetObject.delete()
         return Response(status=status.HTTP_200_OK)
 
+#5 Mixins 
+#5.1 mixins list
+class mixins_list(mixins.ListModelMixin , mixins.CreateModelMixin ,generics.GenericAPIView):
+    # mixins.ListModelMixin --> get of all rows 
+    # mixins.CreateModelMixin --> post
+    # generics.GenericAPIView --> look like @api_view([""]) and APIView 
+    
+    # I can import 
+    #   from rest_framework.mixins import ListModelMixin
+    #   call as ListModelMixin
+    
+    # I override its
+    queryset = Gust.objects.all()
+    serializer_class = GustSerializer
+    
+    def get(self , request):
+        return self.list(request)
+    
+    def post(self , request):
+        return self.create(request)
+    
+#5.2 mixins get put delete 
+class mixins_pk(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+    # mixins.RetrieveModelMixin --> retrieve(get) of a particular item
+    # mixins.UpdateModelMixin --> put
+    # mixins.DestroyModelMixin = delete
+    # generics.GenericAPIView --> look like @api_view([""]) and APIView 
+    
+    # I override its
+    queryset = Gust.objects.all()
+    serializer_class = GustSerializer
+    
+    def get(self , request,pk):
+        return self.retrieve(request,pk)
+    
+    def put(self , request,pk):
+        return self.update(request,pk)
+    
+    def delete(self , request,pk):
+        return self.destroy(request,pk)
+    
+    
+        
