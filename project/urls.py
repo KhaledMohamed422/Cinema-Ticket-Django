@@ -39,4 +39,9 @@ urlpatterns = [
     #5.2 GET PUT DELETE from rest framework class based view mixins
     path('djangoRestfreamwork/mixins/<int:pk>', mixins_pk.as_view()),
 
+    #6.1 GET POST from rest framework class based view generics
+    path('djangoRestfreamwork/generics/', generics_list.as_view()),
+
+    #6.2 GET PUT DELETE from rest framework class based view generics
+    path('djangoRestfreamwork/generics/<int:pk>', generics_pk.as_view()),
 ]

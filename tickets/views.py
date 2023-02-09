@@ -189,5 +189,14 @@ class mixins_pk(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.Destr
     def delete(self , request,pk):
         return self.destroy(request,pk)
     
-    
+# 6 Generics 
+#6.1 get and post
+class generics_list(generics.ListCreateAPIView):
+    queryset = Gust.objects.all()
+    serializer_class = GustSerializer
+
+#6.2 get put and delete 
+class generics_pk(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Gust.objects.all()
+    serializer_class = GustSerializer
         
