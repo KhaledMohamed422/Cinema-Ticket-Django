@@ -27,4 +27,10 @@ urlpatterns = [
     #3.2 GET PUT DELETE from rest framework function based view @api_view
     path('djangoRestfreamwork/Put_Get_Delete/<int:pk>', fbv_get_list_put_data_delete_data), 
 
+    #4.1 GET POST from rest framework class based view APIView
+    path('djangoRestfreamwork/CBV/', CBV_List.as_view()),
+    
+    #4.2 GET PUT DELETE from rest framework class based view APIView
+    path('djangoRestfreamwork/CBV/<int:pk>', CBV_pk.as_view()),
+ 
 ]

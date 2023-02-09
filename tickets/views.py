@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from .serializers import *
 from .models import *
 from rest_framework import status, filters
+from rest_framework.views import APIView
+from django.http import Http404
 
 # Create your views here.
 # List == GET
@@ -13,6 +15,10 @@ from rest_framework import status, filters
 # Update == PUT
 # Delete destroy == DELETE
 
+
+# JsonResponse --> Django
+# Response --> RestFreamWork
+# is_valid() --> use with any form or its equivalent
 
 # 1 To send as json  (without model and without rest )
 def fbv_no_rest_no_model(request):
@@ -37,8 +43,6 @@ def fbv_no_rest_no_model(request):
     return JsonResponse(response, safe=False)
 
 # 2 To send as json ( model and without rest )
-
-
 def fbv_model_no_rest(request):
     GustObject = Gust.objects.all()
 
@@ -48,8 +52,6 @@ def fbv_model_no_rest(request):
     return JsonResponse(response, safe=True)
 
 # 3.1 GET POST with restfreamwork
-
-
 @api_view(["GET", "POST"])
 def fbv_get_list_post_data(request):
     # GET
@@ -73,8 +75,6 @@ def fbv_get_list_post_data(request):
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 # 3.2 GET PUT DELETE with restfreamwork
-
-
 @api_view(["GET", "PUT", "DELETE"])
 def fbv_get_list_put_data_delete_data(request, pk):
     # To check id is exist or no , as get() return erro if not exist
@@ -98,3 +98,53 @@ def fbv_get_list_put_data_delete_data(request, pk):
     elif request.method == "DELETE":
         queryGust.delete()
         return Response(status=status.HTTP_201_CREATED)
+
+# CBV Class based views
+# 4.1 List and Create == GET and POST
+class CBV_List(APIView):
+
+    # GET
+    def get(self, request):
+        querysetObject = Gust.objects.all()
+        serializer = GustSerializer(querysetObject, many=True)
+        return Response(serializer.data)
+    # POST
+
+    def post(self, request):
+        serializer = GustSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
+# 4.2 GET PUT DELETE cloass based views -- pk
+class CBV_pk(APIView):
+
+    # To check about query
+    def retriveOneObject(self, pk):
+        try:
+            return Gust.objects.get(id=pk)
+        except:
+            return Http404
+
+    # GET
+    def get(self, request, pk):
+        querysetObject = self.retriveOneObject(pk=pk)
+        serializer = GustSerializer(querysetObject)
+        return Response(serializer.data)
+
+    # PUT
+    def put(self, request, pk):
+        querysetObject = self.retriveOneObject(pk=pk)
+        serializer = GustSerializer(querysetObject, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
+    # Delete
+    def delete(self, request, pk):
+        querysetObject = self.retriveOneObject(pk=pk)
+        querysetObject.delete()
+        return Response(status=status.HTTP_200_OK)
+
