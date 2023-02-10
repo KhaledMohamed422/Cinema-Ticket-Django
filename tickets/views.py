@@ -200,3 +200,44 @@ class generics_pk(generics.RetrieveUpdateDestroyAPIView):
     queryset = Gust.objects.all()
     serializer_class = GustSerializer
         
+#7 viewsets (get - put - delete - retrive)
+class viewsets_guest(viewsets.ModelViewSet):
+    queryset = Gust.objects.all()
+    serializer_class = GustSerializer
+    
+class viewsets_movie(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    
+# Error    
+class viewsets_reservation(viewsets.ModelViewSet):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
+
+#8 Find movie
+@api_view(['GET'])
+def find_movie(request):
+    movies = Movie.objects.filter(
+        hall = request.data['hall'],
+        movie = request.data['movie'],
+    )
+    serializer = MovieSerializer(movies, many= True)
+    return Response(serializer.data)
+    
+#9 create new reservation
+@api_view(["POST"])
+def new_reservation(request):
+    try:
+        movie = Movie.objects.get(hall= request.data['hall'] , movie = request.data['movie']) 
+        gust = Gust.objects.create(name=request.data['name'] , mobile= request.data['mobile'])
+        gust.save()
+        reservation = Reservation.objects.create(gust = gust , movie = movie)
+        reservation.save()
+        return Response(status=status.HTTP_200_OK)    
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)  
+    
+
+    
+    
+    
